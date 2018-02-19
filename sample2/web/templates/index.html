@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ title }}</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+
+  <h1>Add 2 numbers with querystring</h1>
+  <div>
+    <p><a href="{{ url_for('api.math/add_add_job') }}?a=1&b=2">{{ url_for('api.math/add_add_job') }}?a=1&b=2</a>
+  </div>
+
+  <h1>Multiply 2 numbers with querystring</h1>
+  <div>
+    <p><a href="{{ url_for('api.math/mul_mul_job') }}?a=1&b=2">{{ url_for('api.math/mul_mul_job') }}?a=1&b=2</a>
+  </div>
+
+  <hr>
+
+
+
+  <h1>Add/Multiply 2 numbers with json request</h1>
+  <div>
+    <p><input id="a2" type="text" name="a"></p>
+    <p><input id="b2" type="text" name="b"></p>
+    <p>
+      <input id="c2" type="button" value="add">
+      <input id="d2" type="button" value="mul">
+      <input id="e2" type="hidden" value="add">
+    </p>
+  </div>
+
+  <hr>
+  <h2>Results:</h2>
+  <div id="result"></div>
+
+
+
+</body>
+
+
+<script>
+
+$( document ).ready(function() {
+  // set operation name on hidden elements
+  $("#c1").on("click",function() {
+      $('#f1 #e1').val('add');
+  });
+  $("#d1").on("click",function() {
+      $('#f1 #e1').val('mul');
+  });
+
+  // Web form request
+  $("#f1").on("submit", processFormRequest);
+  function processFormRequest(evt) {
+      evt.preventDefault();
+      console.log("** submitting web form");
+
+      $("#result").html('<div></div>');
+
+      form = new FormData();
+      form.append("a",$("#a1").val());
+      form.append("b",$("#b1").val());
+
+      type=$("#e1").val();
+      if (type=="add") {
+        url = '{{ url_for('api.math/add_add_job') }}';
+      } else {
+        if (type=="mul") {
+          url = '{{ url_for('api.math/mul_mul_job') }}';
+        }
+      }
+
+      window.fetch(url, {
+          method: 'POST',
+          body: form
+      }).then(function(response) {
+          return response.json();
+      }).then(function(response_json) {
+          checkTask(response_json.task_id);
+      }).catch(function(error) {
+          console.log('Error', error);
+      });
+  }
+
+
+  $("#c2").on("click",function() {
+      $('#e2').val('add');
+  });
+  $("#d2").on("click",function() {
+      $('#e2').val('mul');
+  });
+
+  // JSON request
+  $("#c2").on("click", function(evt) {$('#e2').val('add'); processJsonRequest(evt)});
+  $("#d2").on("click", function(evt) {$('#e2').val('mul'); processJsonRequest(evt)});
+  function processJsonRequest(evt) {
+    console.log("** sending json request");
+    $("#result").html('<div></div>');
+
+    data = JSON.stringify({
+    	a: parseInt($("#a2").val()),
+    	b: parseInt($("#b2").val())
+    });
+
+    type=$("#e2").val();
+    if (type=="add") {
+      url = '{{ url_for('api.math/add_add_job') }}';
+    } else {
+      if (type=="mul") {
+        url = '{{ url_for('api.math/mul_mul_job') }}';
+      }
+    }
+
+    window.fetch(url, {
+      method: 'POST',
+      body: data,
+      headers: new Headers({
+    		'Content-Type': 'application/json'
+    	})
+    }).then(function(response) {
+      return response.json();
+    }).then(function(response_json) {
+        //checkTask(type,response_json.task_id);
+        checkTask(response_json.id);
+    }).catch(function(error) {
+        console.log('Error', error);
+    });
+  }
+
+
+
+
+
+    // check task status and result
+    function checkTask(task_id) {
+
+        window.fetch('{{ url_for('api.math/jobs_math_job_status',id='') }}' + task_id, {
+          method: 'GET',
+          redirect: 'follow'
+        }).then(function(response) {
+            return response.json();
+        }).then(function(response_json) {
+          if(response_json.status === 'PENDING') {
+            setTimeout(function() {
+              checkTask(task_id);
+            }, 1000)
+          } else if(response_json.status === 'STARTED') {
+            setTimeout(function() {
+              checkTask(task_id);
+            }, 1000)
+          } else if(response_json.status === 'ERROR') {
+            alert('Failure occurred');
+          } else if(response_json.status === 'SUCCESS') {
+            $("#result").html('<div>Job achieved - status : ' + JSON.stringify(response_json.status) + ' - result : ' + JSON.stringify(response_json.result) + '</div>')
+          }
+        }).catch(function(error) {
+            console.log('Error', error);
+        });
+    }
+
+
+
+});
+
+</script>
+
+
+</html>
