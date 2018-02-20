@@ -8,7 +8,7 @@ from sample2.api.math.endpoints.jobs import MathJobStatus
 from sample2.business.math.tasks import mul_task
 
 log = logging.getLogger(__name__)
-ns = api.namespace('math/mul', description='Operations related to add')
+ns = api.namespace('math/mul', description='Operations related to multiply')
 
 @ns.route('')
 class MulJob(Resource):
