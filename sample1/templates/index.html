@@ -154,7 +154,7 @@ $( document ).ready(function() {
           if(response_json.state === 'PENDING') {
             setTimeout(function() {
               checkGenericTask(task_id);
-            }, 1000)
+            }, 1000);
           } else if(response_json.state === 'FAILURE') {
             alert('Failure occurred');
           } else if(response_json.state === 'SUCCESS') {

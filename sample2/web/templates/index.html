@@ -122,7 +122,6 @@ $( document ).ready(function() {
     }).then(function(response) {
       return response.json();
     }).then(function(response_json) {
-        //checkTask(type,response_json.task_id);
         checkTask(response_json.id);
     }).catch(function(error) {
         console.log('Error', error);
@@ -145,11 +144,11 @@ $( document ).ready(function() {
           if(response_json.status === 'PENDING') {
             setTimeout(function() {
               checkTask(task_id);
-            }, 1000)
+            }, 1000);
           } else if(response_json.status === 'STARTED') {
             setTimeout(function() {
               checkTask(task_id);
-            }, 1000)
+            }, 1000);
           } else if(response_json.status === 'ERROR') {
             alert('Failure occurred');
           } else if(response_json.status === 'SUCCESS') {
