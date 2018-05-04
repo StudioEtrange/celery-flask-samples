@@ -15,7 +15,7 @@ Python version used : `Python 3.6`
 
 ## Sample #1
 
-Simple example with a simple API with Flask (frontend), and an asynchronous job manager with Celery/Redis (backend)
+Simple example with a simple asynchronous API with Flask (frontend), and an asynchronous job manager with Celery/Redis (backend)
 
 * Frontend
   * Flask for asynchronous web API restful API
@@ -76,7 +76,7 @@ Simple example with a simple API with Flask (frontend), and an asynchronous job 
 
 ## Sample #2
 
-Simple example with a simple API with Flask and Flask-RESTPlus (frontend) an asynchronous job manager with Celery/Redis (backend)
+Simple example with a simple asynchronous API with Flask and Flask-RESTPlus (frontend) an asynchronous job manager with Celery/Redis (backend)
 
 API is documented with swagger.
 
@@ -257,3 +257,5 @@ tutorial : https://www.youtube.com/watch?v=mStotDgJwPU
 https://flask-marshmallow.readthedocs.io/en/latest/
 https://github.com/noirbizarre/flask-restplus/issues/317
 https://github.com/joeyorlando/flask-restplus-marshmallow
+
+* TODO tweak some celery configuration : https://medium.com/@taylorhughes/three-quick-tips-from-two-years-with-celery-c05ff9d7f9eb
