@@ -3,4 +3,4 @@ celery[redis]
 redis==2.10.6
 Flask==0.12
 Flask-Cors==3.0.3
-flower==0.9.2
+flower==1.2.0
